@@ -111,9 +111,37 @@ JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
 WHERE `teachers`.`id` = 44;
 ```
 
-4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in 5. ordine alfabetico per cognome e nome
+4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
+
+```sql
+SELECT `students`.`id`, `students`.`surname`, `students`.`name`, `degrees`.`name`, `degrees`.`level`, `degrees`.`website`
+FROM `students`
+JOIN `degrees` ON `students`.`degree_id` = `degrees`.`id`
+JOIN `departments` ON `departments`.`id` = `degrees`.`department_id`
+ORDER BY `students`.`surname` ASC, `students`.`name` ASC;
+```
+
 5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+
+```sql
+SELECT `degrees`.`id` AS `degree_id`, `degrees`.`name`, `degrees`.`level`, `degrees`.`address`, `degrees`.`email`, `courses`.`id` AS `course_id`, `courses`.`name`, `courses`.`description`, `courses`.`cfu`, `teachers`.`id` AS `teacher_id`, `teachers`.`name`, `teachers`.`surname`
+FROM `degrees`
+JOIN `courses` ON `degrees`.`id` = `courses`.`degree_id`
+JOIN `course_teacher` ON `courses`.`id` = `course_teacher`.`course_id`
+JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
+```
+
 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+
+```sql
+SELECT `teachers`.`id` AS `teacher_id`, `teachers`.`name`, `teachers`.`surname`, `departments`.`name`
+FROM `departments`
+JOIN `degrees` ON `degrees`.`department_id` = `departments`.`id`
+JOIN `courses` ON `courses`.`degree_id` = `degrees`.`id`
+JOIN `course_teacher` ON `courses`.`id` = `course_teacher`.`course_id`
+JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
+WHERE `departments`.`name` = 'Dipartimento di Matematica';
+```
 
 ### BONUS: 
 Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame, stampando anche il voto massimo. Successivamente, filtrare i tentativi con voto minimo 18.
