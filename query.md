@@ -69,9 +69,9 @@ GROUP BY `office_address`;
 3. Calcolare la media dei voti di ogni appello d'esame
    
 ```sql
-SELECT `id`, AVG(`cfu`) as `average_cfu`
-FROM `courses`
-GROUP BY `id`;
+SELECT `exam_id`, ROUND(AVG(`vote`), 1) as `average_vote`
+FROM `exam_student`
+GROUP BY `exam_id`;
 ```
 
 4. Contare quanti corsi di laurea ci sono per ogni dipartimento
@@ -134,13 +134,14 @@ JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
 
 ```sql
-SELECT `teachers`.`id` AS `teacher_id`, `teachers`.`name`, `teachers`.`surname`, `departments`.`name`
+SELECT DISTINCT `teachers`.`id` AS `teacher_id`, `teachers`.`name`, `teachers`.`surname`, `departments`.`name`
 FROM `departments`
 JOIN `degrees` ON `degrees`.`department_id` = `departments`.`id`
 JOIN `courses` ON `courses`.`degree_id` = `degrees`.`id`
 JOIN `course_teacher` ON `courses`.`id` = `course_teacher`.`course_id`
 JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
-WHERE `departments`.`name` = 'Dipartimento di Matematica';
+WHERE `departments`.`name` = 'Dipartimento di Matematica'
+ORDER BY `teachers`.`id` ASC
 ```
 
 ### BONUS: 
